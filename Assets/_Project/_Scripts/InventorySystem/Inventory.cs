@@ -13,6 +13,8 @@ public class Inventory : MonoBehaviour
     public GameObject itemPanel;
     public GameObject itemPanelGrid;
 
+    public Mouse mouse;
+
     List<ItemPanel> existingPanels = new List<ItemPanel>();
 
     [Space]
@@ -24,7 +26,9 @@ public class Inventory : MonoBehaviour
         {
             items.Add(new ItemSlotInfo(null, 0));
         }
-        RefreshInventory();
+        
+        //Testing
+        AddItem(new WoodItem(), 40);
     }
 
     void Update()
@@ -34,6 +38,7 @@ public class Inventory : MonoBehaviour
             if (inventoryMenu.activeSelf)
             {
                 inventoryMenu.SetActive(false);
+                mouse.EmptySlot();
                 Cursor.lockState = CursorLockMode.Locked;
             }
             else
@@ -83,6 +88,7 @@ public class Inventory : MonoBehaviour
                     {
                         panel.itemImage.gameObject.SetActive(true);
                         panel.itemImage.sprite = i.item.GiveItemImage();
+                        panel.itemImage.CrossFadeAlpha(1, 0.05f, true);
                         panel.stacksText.gameObject.SetActive(true);
                         panel.stacksText.text = "" + i.stacks;
                     }
@@ -95,6 +101,7 @@ public class Inventory : MonoBehaviour
                 index++;
             }
         }
+        mouse.EmptySlot();
     }
 
     public int AddItem(Item item, int amount)
